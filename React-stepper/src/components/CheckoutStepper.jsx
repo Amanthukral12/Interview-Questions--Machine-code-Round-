@@ -4,6 +4,7 @@ import propTypes from "prop-types";
 const CheckoutStepper = ({ stepConfig = [] }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isComplete, setIsComplete] = useState(false);
+
   const handleNext = () => {
     setCurrentStep((prevStep) => {
       if (prevStep === stepConfig.length) {
@@ -14,6 +15,11 @@ const CheckoutStepper = ({ stepConfig = [] }) => {
       }
     });
   };
+
+  const calculateProgressBarWidth = () => {
+    return ((currentStep - 1) / (stepConfig.length - 1)) * 100;
+  };
+
   if (!stepConfig.length) {
     return <></>;
   }
@@ -40,6 +46,13 @@ const CheckoutStepper = ({ stepConfig = [] }) => {
             </div>
           );
         })}
+
+        <div className="progress-bar">
+          <div
+            className="progress"
+            style={{ width: `${calculateProgressBarWidth()}%` }}
+          ></div>
+        </div>
       </div>
       <ActiveComponent />
       {!isComplete && (
